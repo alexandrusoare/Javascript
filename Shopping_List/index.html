@@ -1,0 +1,43 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Dynamic Shopping list</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="card-deck my-3"> 
+                   
+      <div class="card mb-4 box-shadow col-6 mr-0">                  
+          <div class="card-body">
+            <h1 id="title" class="mb-3">My shopping list</h1> 
+            <label for="shop">Enter a new item</label>            
+            <input type="text" id="shop" class="mb-4">
+            <button id="add">Add item</button>        
+            
+            <ul id="lista">
+            </ul>
+                   
+          </div>
+      </div>  
+                            
+      <div class="card mb-4 box-shadow col-6 ">                
+          <div class="card-body">
+            <h1 id="title" class="mb-3">Final shopping list</h1> 
+            
+            <ul id="fin">
+            </ul>
+                     
+          </div>
+      </div>              
+      
+    </div>   
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
