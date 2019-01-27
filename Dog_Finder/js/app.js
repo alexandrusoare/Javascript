@@ -77,12 +77,18 @@ card.addEventListener('click',()=>{
 // (trimiterea request-ului si parsarea raspunsului JSON)
 
 function fetchData(url){
-    fetch(url).then((res)=> res.json()).then((data) => generateImage(data.message));
+    fetch(url).then((res)=> res.json())
+    .then((data) => generateImage(data.message))
+    .catch(Show);
 }
 
 // PAS 7 - atasati cu metoda .catch() un handler care sa afiseze in consola un mesaj custom de eroare 
 // si eroarea primita de la server. Ca sa va asigurati ca functioneaza, schimbati url-ul catre care
 // trimiteti request-ul cu unul gresit.
+    function Show(error){
+        alert(`Error: ${error}`);
+    }
+
 
 
 // PAS 8 - integrati primele doua comenzi .fetch() intr-o singura comanda Promise.all()
@@ -96,6 +102,30 @@ function fetchData(url){
 
 // PAS 9 - Transmiteti datele completate in formular printr-un request POST, catre https://jsonplaceholder.typicode.com/posts 
 // Printati in consola raspunsul primit de la server, impreuna cu un mesaj custom.  
+
+ const namev = document.getElementById('name');
+ const commentv = document.getElementById('comment');
+ const submit = document.getElementById('submit');
+
+
+
+ submit.addEventListener('click', (e)=>{
+     e.preventDefault();
+     var data ={
+         name : namev.value,
+         comment : commentv.value
+     }
+     fetch('https://jsonplaceholder.typicode.com/posts',{
+         method:'POST',
+         body: JSON.stringify(data),
+         headers:{
+            'Content-Type': 'application/json'
+          }
+     }).then(res => res.json())
+     .then(response => console.log('Success:',response))
+     .catch(error => console.error('Error:', error));
+ })
+
 
 
 // ------------------------------------------
