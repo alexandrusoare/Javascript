@@ -97,7 +97,7 @@ search.addEventListener('keyup' , function (ev) {
 function searchBreeds(text) {
     var searchedBreeds = cat_array.filter(item => item.name.toLowerCase().indexOf(text.toLowerCase()) !== -1)
         .map(item =>{ 
-            return fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${item.id}&limit=5`, login)
+            return fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${item.id}&limit=6`, login)
                     .then(res => res.json())
     });
 
