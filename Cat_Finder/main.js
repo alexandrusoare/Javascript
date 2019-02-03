@@ -68,11 +68,8 @@ function generateButtons(but) {
 function generateImagesByCategory(id) {
     const images_div = document.getElementById('images');
     var arr = document.querySelectorAll('#images img');
-    if (arr.length != 0) {
-        for (var i = 0; i < 6; i++) {
-            images_div.removeChild(arr[i]);
-        }
-    }
+    if (arr.length != 0)
+        images_div.innerHTML = '';
     for (let i = 0; i < 6; i++) {
         let image = document.createElement('img');
         fetch(`https://api.thecatapi.com/v1/images/search?category_ids=${id}`, login)
@@ -122,6 +119,9 @@ function generate_Array(arr) {
 //ataseaza imagini div ului
 function generateImagesBySearch(arr){
     const images_div = document.getElementById('images');
+    var ref = document.querySelectorAll('#images img');
+    if (ref.length != 0)
+        images_div.innerHTML = '';
     for (var i = 0; i < arr.length;i++){
         let image = document.createElement('img');
         image.src = arr[i].url;
