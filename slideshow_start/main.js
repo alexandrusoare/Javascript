@@ -7,7 +7,7 @@ const images = [
 ];
 
 let index = 0;
-//afisare imagine curenta
+//afiseaza imaginea curenta
 function showImage(i){
     var image = document.getElementById('slide');
     image.src = 'img/' + images[i].src;

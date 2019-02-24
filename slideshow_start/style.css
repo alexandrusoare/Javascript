@@ -1,5 +1,4 @@
 
-/* The dots/bullets/indicators */
 .biluta {
     cursor: pointer;
     height: 15px;
@@ -16,6 +15,5 @@
   }
   
   .meniu {
-    /* border: 1px solid black; */
     text-align: center;
   }
