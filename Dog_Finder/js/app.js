@@ -32,7 +32,6 @@ function generateOptions(list){
 //afiseaza o imagine cu un caine in functie de rasa selectata
 select.addEventListener('change',()=> {
     var race = select.value;
-    console.log(race);
     fetchData(`https://dog.ceo/api/breed/${race}/images/random`);
 } )
 
