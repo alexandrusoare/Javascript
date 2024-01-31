@@ -1,0 +1,83 @@
+@font-face {
+    font-family: Source Sans Pro;
+    src: url(resources/fonts/SourceSansPro-Regular.otf)
+}
+
+
+body {
+    font-family: Source Sans Pro, sans-serif;
+    margin: 0;
+}
+
+#header {
+    width: 100%;
+    position: relative;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #F2F5F8;
+    box-sizing: border-box;
+}
+
+#header-title{
+    margin: 0;
+    font-size: 40px;
+    line-height: 40px;
+}
+
+#game-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+#game-canvas {
+    width: 426px;
+}
+
+#board-container{
+    margin-top: 10px;
+    height: 50px;
+    width: 426px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#score-grid {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+}
+
+#score {
+    font-weight: bold;
+    font-size: 20px;
+    color: #515152;
+}
+
+#day-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+#day-grid > span {
+    color: #515152;
+    font-size: 12px;
+}
+
+#best-score {
+    color: #515152;
+}
+
+#trophy-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+}
+

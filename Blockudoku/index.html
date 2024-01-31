@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blockudoku</title>
+        <link rel="stylesheet" href=" style.css"/>
+    </head>
+    <body>
+        <header id="header">
+            <h1 id="header-title">Blockudoku</h1>
+        </header>
+
+        <main>
+            <div id="game-container">
+                <div id="board-container">
+                <div id="score-grid">
+                    <span id="score"></span>
+                </div>
+                <div id="day-grid">
+                    <span id="today">Today's best</span>
+                    <div id="best-score-container">
+                        <img id="trophy-icon" src="./resources/icons/trophy.svg"/>
+                        <span id="best-score">880</span>
+                    </div>
+                    
+                </div>
+                </div>
+                
+                <canvas id="game-canvas" width="426" height="600"></canvas>
+            </div>
+        </main>
+        <script type="module" src="blockudoku.js"></script>
+    </body>
+</html>
