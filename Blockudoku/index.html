@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Blockudoku</title>
-        <link rel="stylesheet" href=" style.css"/>
+        <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
         <header id="header">
@@ -28,6 +28,14 @@
                 </div>
                 
                 <canvas id="game-canvas" width="426" height="600"></canvas>
+            </div>
+
+            <div id="gameover-container">
+                <div id="gameover-text">
+                <span>Game Completed</span>
+                <span id="final-score"></span></div>
+                <canvas id="miniature-grid" width="250" height="250"></canvas>
+                <button id="new-game">New Game</button>
             </div>
         </main>
         <script type="module" src="blockudoku.js"></script>

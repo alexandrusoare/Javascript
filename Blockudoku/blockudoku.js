@@ -19,6 +19,7 @@ class BlockudokuGame {
         this.totalScore = 0;
         this.gameOver = false;
 
+
         this.setupEventListeners();
         this.redrawCanvas();
         this.updateScore(this.totalScore);
@@ -43,10 +44,11 @@ class BlockudokuGame {
     }
 
     //This function has 3 main task: draw the grid, draw the placed shapes, draw the possibilities of selected shape
-    drawGrid(gridSize = this.gridSize, cellSize = this.cellSize, borderWidth= this.borderWidth) {
-        const gameCanvas = this.gameCanvas;
-        const ctx = this.ctx;
+    drawGrid(ctx = this.ctx, cellSize = this.cellSize, gameCanvas = this.gameCanvas) {
+        const borderWidth= this.borderWidth;
         const grid = this.grid;
+        const gridSize = this.gridSize
+        
 
         // Custom color for 4 of the 9 3x3 boxes
         ctx.fillStyle = '#E7EAEF';
@@ -503,30 +505,30 @@ class BlockudokuGame {
     }
 
     drawGameOver() {
-        this.ctx.clearRect(0, 0, this.canvasWidth, this.gameCanvas.height);
         
-        // Display game over text
-        this.ctx.font = "30px Arial";
-        this.ctx.fillStyle = "red";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("Game Over", this.canvasWidth / 2, this.canvasWidth / 2);
+        let finalScore = document.getElementById('final-score');
+        finalScore.textContent = this.totalScore;
 
-        // Display score
-        this.ctx.font = "20px Arial";
-        this.ctx.fillStyle = "black";
-        this.ctx.fillText("Score: " + this.totalScore, this.canvasWidth / 2, this.canvasWidth / 2 + 40);
-
-        // Display miniature grid with shapes
-        this.drawGrid(4,20,1);
-
-        // Display restart button
-        const restartButton = document.createElement("button");
-        restartButton.textContent = "Restart Game";
-        restartButton.addEventListener("click", this.restartGame.bind(this));
-        document.body.appendChild(restartButton);
+        let gameContainer = document.getElementById('game-container');
+        let gameOverContainer = document.getElementById('gameover-container');
+        gameContainer.style.display = 'none';
+        gameOverContainer.style.display = 'flex';
+        
+        let miniatureGrid = document.getElementById('miniature-grid');
+        let ctx = miniatureGrid.getContext("2d");
+        let cellSize = miniatureGrid.width / this.gridSize;
+        
+        this.drawGrid(ctx, cellSize, miniatureGrid)
+        let button = document.getElementById('new-game');
+        button.addEventListener('click', () => this.restartGame())
+        
     }
 
     restartGame() {
+        let gameContainer = document.getElementById('game-container');
+        let gameOverContainer = document.getElementById('gameover-container');
+        gameContainer.style.display = 'flex';
+        gameOverContainer.style.display = 'none';
         // Reset game state
         this.grid = Array.from({ length: this.gridSize }, () => Array(this.gridSize).fill(null));
         this.randomShapes = this.generateNewRandomShapes();
