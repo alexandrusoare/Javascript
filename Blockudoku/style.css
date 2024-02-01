@@ -125,3 +125,15 @@ body {
     letter-spacing: 1px;
     cursor: pointer;
 }
+
+#gameinfo-container {
+    width: 426px;
+    margin: 0 auto;
+    text-align: center;
+    color: #344861;
+}
+
+#gameinfo-container > p {
+    color: #6e7c8c;
+    font-weight: 300;
+}
