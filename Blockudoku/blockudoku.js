@@ -18,11 +18,13 @@ class BlockudokuGame {
         this.isPlacementPossible = false;
         this.totalScore = 0;
         this.gameOver = false;
+        this.bestScore = parseInt(localStorage.getItem('bestScore')) || 0;
 
-
+        this.setupDailyReset();
         this.setupEventListeners();
         this.redrawCanvas();
         this.updateScore(this.totalScore);
+        this.updateBestScoreDisplay();
     }
 
     //This function handles the main abilities of the user (hold the click down, release the click, move)
@@ -30,6 +32,36 @@ class BlockudokuGame {
         this.gameCanvas.addEventListener("mousedown", this.handleMouseDown.bind(this));
         this.gameCanvas.addEventListener("mousemove", this.handleMouseMove.bind(this));
         this.gameCanvas.addEventListener("mouseup", this.handleMouseUp.bind(this));
+    }
+
+    //This function makes sure the best score resets after 1 day
+    setupDailyReset() {
+        setInterval(() => {
+            const now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0) {
+                // Reset the best score to 0
+                this.bestScore = 0;
+                // Update the best score in localStorage
+                localStorage.setItem('bestScore', this.bestScore.toString());
+                // Update the displayed best score in your game interface
+                this.updateBestScoreDisplay();
+            }
+        }, 60000); // Check every minute
+    }
+
+    updateBestScore(score) {
+        if (score > this.bestScore) {
+            this.bestScore = score;
+            // Update the best score in localStorage
+            localStorage.setItem('bestScore', this.bestScore.toString());
+            // Update the displayed best score in your game interface
+            this.updateBestScoreDisplay();
+        }
+    }
+
+    updateBestScoreDisplay() {
+        let bestScore = document.getElementById('best-score');
+        bestScore.textContent = this.bestScore;
     }
 
     //This function returns an array of 3 randomly generated shapes
@@ -196,7 +228,7 @@ class BlockudokuGame {
 
     //We call this function to check if the mouse is over a shape
     isCursorOverShape(shape, mouseX, mouseY) {
-        if (shape){
+        if (shape && shape.clickable){
         const startX = shape.x;
         const startY = shape.y;
         const endX = startX + this.calculateShapeWidth(shape);
@@ -458,6 +490,7 @@ class BlockudokuGame {
         const targetScore = initialScore + scoreIncrement;
         this.animateScore(initialScore, targetScore);
         this.totalScore = targetScore;
+        this.updateBestScore(targetScore);
     }
 
 
