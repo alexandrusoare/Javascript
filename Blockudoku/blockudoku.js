@@ -430,7 +430,7 @@ class BlockudokuGame {
 
     
 
-
+    // We call this function to animate the score bar (e.g. from 0 you get 4 points so it's animated the sequence between them 0 - 1 - 2 - 3 - 4)
     animateScore(initialScore, targetScore, duration = 200) {
         const startTime = performance.now();
         const scoreDisplay = document.getElementById('score');
@@ -452,6 +452,7 @@ class BlockudokuGame {
         requestAnimationFrame(updateScore);
     }
 
+    //We call this function to update the Score Bar
     updateScore(scoreIncrement) {
         const initialScore = this.totalScore;
         const targetScore = initialScore + scoreIncrement;
@@ -459,6 +460,8 @@ class BlockudokuGame {
         this.totalScore = targetScore;
     }
 
+
+    //We check if a shape is placeable on the grid or not
     checkGridAvailability(shape) {
         if (shape) {
         for (let row = 0; row < this.gridSize; row++) {
@@ -504,6 +507,7 @@ class BlockudokuGame {
         }
     }
 
+    //We call this function to show the game over screen
     drawGameOver() {
         
         let finalScore = document.getElementById('final-score');
@@ -524,6 +528,7 @@ class BlockudokuGame {
         
     }
 
+    //We call this function to start a new game
     restartGame() {
         let gameContainer = document.getElementById('game-container');
         let gameOverContainer = document.getElementById('gameover-container');
