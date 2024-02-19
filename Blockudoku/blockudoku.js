@@ -450,6 +450,11 @@ class BlockudokuGame {
         const scoreIncrement = (completedColumns.length * this.gridSize * 2) + (completedRows.length * this.gridSize * 2) + (completedBoxes.length * this.gridSize * 2) + this.selectedShape.cells.length;
 
         this.updateScore(scoreIncrement);
+
+        //we call this function only when we clear a line or a box, this animates the points we get 
+        if (completedColumns.length > 0 || completedRows.length > 0 || completedBoxes.length > 0){
+        this.handleScoreIncrementAnimation(scoreIncrement, this.gameCanvas.width/2, this.gameCanvas.width/2 );
+        }
         
         // Handle the completed rows, columns, and boxes (e.g., clear them)
         this.handleCompletedRows(completedRows);
@@ -460,8 +465,55 @@ class BlockudokuGame {
         this.redrawCanvas();
     }
 
+    //We call this function to show the points you get when you clear someting (e.g., column, row, box)
+    handleScoreIncrementAnimation(points, x, y) {
+        let startTime = performance.now();
+        let animationDuration = 1000; // Duration of the animation in milliseconds
+        let opacity = 1;
+        let that = this;
     
+        function animate() {
+            const elapsedTime = performance.now() - startTime;
+            const progress = Math.min(elapsedTime / animationDuration, 1); // Ensure progress does not exceed 1
+    
+            // Update position (e.g., move upward)
+            y -= 1 * progress; // Adjust speed as needed
+    
+            // Update opacity (e.g., fade out)
+            opacity = 1 - progress;
+    
+            // Redraw the canvas with the updated score increment text
+            that.redrawCanvasWithScoreIncrement(points, x, y, opacity);
+    
+            // Continue the animation if not finished
+            if (progress < 1) {
+                requestAnimationFrame(animate);
 
+            }
+        }
+    
+        // Start the animation
+        animate();
+    }
+    
+    redrawCanvasWithScoreIncrement(points, x, y, opacity) {
+        let ctx = this.ctx;
+        // Clear the canvas
+        ctx.clearRect(0, 0, this.gameCanvas.width, this.gameCanvas.height);
+    
+        // Redraw the grid
+        this.drawGrid();
+    
+        // Redraw the shapes
+        this.positionAndDrawShapes(this.randomShapes)
+    
+        // Draw the score increment text
+        ctx.fillStyle = `rgba(193,58, 6, ${opacity})`;
+        ctx.font = "bold 24px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(`+${points}`, x, y);
+    }
+    
     // We call this function to animate the score bar (e.g. from 0 you get 4 points so it's animated the sequence between them 0 - 1 - 2 - 3 - 4)
     animateScore(initialScore, targetScore, duration = 200) {
         const startTime = performance.now();
