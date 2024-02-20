@@ -147,6 +147,50 @@ class BlockudokuGame {
                 ctx.strokeRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
             });
         }
+
+        // We use this to highlight cells for potential clearance
+    if (this.isDragging && this.selectedShape && this.isPlacementPossible) {
+        // Clone the grid to simulate the placement of the selected shape
+        const tempGrid = this.grid.map(row => [...row]);
+
+        // Simulate placing the selected shape on the temporary grid
+        this.selectedShape.cells.forEach(cell => {
+            const { cellX, cellY } = this.canvasToGridCoordinates(this.selectedShape.x + cell.col * cellSize, this.selectedShape.y + cell.row * cellSize);
+
+            tempGrid[cellY][cellX] = this.selectedShape;
+        });
+
+        // Check for completed rows, columns, and boxes on the temporary grid
+        const completedRows = this.getCompletedRows(tempGrid);
+        const completedColumns = this.getCompletedColumns(tempGrid);
+        const completedBoxes = this.getCompletedBoxes(tempGrid);
+
+        // Highlight cells in completed rows, columns, and boxes
+        completedRows.forEach(rowIndex => {
+            tempGrid[rowIndex].forEach((cell, columnIndex) => {
+                ctx.fillStyle = "rgba(97, 150, 255, 0.5)";
+                ctx.fillRect(columnIndex * cellSize, rowIndex * cellSize, cellSize, cellSize);
+            });
+        });
+
+        completedColumns.forEach(columnIndex => {
+            tempGrid.forEach((row, rowIndex) => {
+                const cell = row[columnIndex];
+                ctx.fillStyle = "rgba(97, 150, 255, 0.5)"; 
+                ctx.fillRect(columnIndex * cellSize, rowIndex * cellSize, cellSize, cellSize);
+            });
+        });
+
+        completedBoxes.forEach(box => {
+            for (let i = box.startRow; i < box.startRow + 3; i++) {
+                for (let j = box.startColumn; j < box.startColumn + 3; j++) {
+                    const cell = tempGrid[i][j];
+                    ctx.fillStyle = "rgba(97, 150, 255, 0.5)"; 
+                    ctx.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                }
+            }
+        });
+    }
     }
 
     // We use this function convert the position of the shape on the canvas to a position on the grid
@@ -274,11 +318,7 @@ class BlockudokuGame {
             // Update the position of the selected shape based on the mouse movement
             this.selectedShape.x = mouseX - this.dragOffsetX;
             this.selectedShape.y = mouseY - this.dragOffsetY;
-
-            // Ensure the shape stays within the canvas bounds
-            // this.selectedShape.x = Math.max(0, Math.min(this.selectedShape.x, this.gameCanvas.width - this.calculateShapeWidth(this.selectedShape)));
-            // this.selectedShape.y = Math.max(0, Math.min(this.selectedShape.y, this.gameCanvas.height - this.calculateShapeHeight(this.selectedShape)));
-
+ 
             this.isPlacementPossible = this.canPlaceShapeAtPosition(this.selectedShape, this.selectedShape.x, this.selectedShape.y);
 
             // Clear the canvas and redraw the grid with the new shape position
@@ -367,11 +407,11 @@ class BlockudokuGame {
     }
 
     //We call this function to check if any of the rows has been completely filled
-    getCompletedRows() {
+    getCompletedRows(grid = this.grid) {
         const completedRows = [];
     
         for (let i = 0; i < this.gridSize; i++) {
-            const rowShapes = this.grid[i].filter(cell => cell !== null);
+            const rowShapes = grid[i].filter(cell => cell !== null);
     
             if (rowShapes.length === this.gridSize) {
                 completedRows.push(i);
@@ -382,11 +422,11 @@ class BlockudokuGame {
     }
 
     //We call this function to check if any of the columns has been completely filled
-    getCompletedColumns() {
+    getCompletedColumns(grid = this.grid) {
         const completedColumns = [];
     
         for (let j = 0; j < this.gridSize; j++) {
-            const columnShapes = this.grid.map(row => row[j]).filter(cell => cell !== null);
+            const columnShapes = grid.map(row => row[j]).filter(cell => cell !== null);
     
             if (columnShapes.length === this.gridSize) {
                 completedColumns.push(j);
@@ -397,13 +437,13 @@ class BlockudokuGame {
     }
 
     //We call this function to check if any of the 3x3 boxes has been completely filled
-    getCompletedBoxes() {
+    getCompletedBoxes(grid = this.grid) {
         const completedBoxes = [];
     
         // Iterate over the 9 possible 3x3 boxes
         for (let startRow = 0; startRow < this.gridSize; startRow += 3) {
             for (let startColumn = 0; startColumn < this.gridSize; startColumn += 3) {
-                const boxOccupied = this.grid
+                const boxOccupied = grid
                     .slice(startRow, startRow + 3)
                     .flatMap(row => row.slice(startColumn, startColumn + 3))
                     .every(cell => cell !== null);
@@ -496,6 +536,7 @@ class BlockudokuGame {
         animate();
     }
     
+    // We call this function to redraw the Canvas for every frame of the animation
     redrawCanvasWithScoreIncrement(points, x, y, opacity) {
         let ctx = this.ctx;
         // Clear the canvas
