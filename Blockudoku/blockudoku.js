@@ -481,6 +481,44 @@ class BlockudokuGame {
         });
     }
 
+    animateClearedCells(cells) {
+        const animationDuration = 500; // Duration of the animation in milliseconds
+        const startTime = performance.now();
+
+        const animate = () => {
+            const elapsedTime = performance.now() - startTime;
+            const progress = Math.min(elapsedTime / animationDuration, 1);
+
+            // Clear the canvas before drawing
+            this.ctx.clearRect(0, 0, this.canvasWidth, this.gameCanvas.height);
+
+            // Redraw the grid
+            this.drawGrid();
+
+            // Redraw the shapes
+            this.positionAndDrawShapes(this.randomShapes);
+
+            // Draw cleared cells with animation
+            cells.forEach(cell => {
+                const cellX = cell.col * this.cellSize;
+                const cellY = cell.row * this.cellSize;
+                const size = this.cellSize * (1 - progress); // Reduce size gradually
+                
+                this.ctx.fillStyle = "#000000"; // White color for disappearing cells
+                this.ctx.fillRect(cellX, cellY, size, size);
+            });
+            // Continue animation if not finished
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+            
+        };
+
+        // Start the animation
+        animate();
+        console.log("1. Se animeaza")
+    }
+
     //We call this function to manage all 3 possibilities of breaking (columns, rows, boxes)
     checkForCompletes() {
         const completedRows = this.getCompletedRows();
@@ -491,6 +529,22 @@ class BlockudokuGame {
 
         this.updateScore(scoreIncrement);
 
+        if (completedColumns.length > 0 || completedRows.length > 0 || completedBoxes.length > 0) {
+            // Get all completed cells for animation
+            const completedCells = [...completedRows, ...completedColumns.map(col => ({ row: 0, col })), ...completedBoxes.flatMap(box => {
+                const cells = [];
+                for (let i = box.startRow; i < box.startRow + 3; i++) {
+                    for (let j = box.startColumn; j < box.startColumn + 3; j++) {
+                        cells.push({ row: i, col: j });
+                    }
+                }
+                return cells;
+            })];
+            // Animate cleared cells
+            this.animateClearedCells(completedCells);
+            console.log("2. S-a terminat animatia")
+        }
+
         //we call this function only when we clear a line or a box, this animates the points we get 
         if (completedColumns.length > 0 || completedRows.length > 0 || completedBoxes.length > 0){
         this.handleScoreIncrementAnimation(scoreIncrement, this.gameCanvas.width/2, this.gameCanvas.width/2 );
@@ -500,9 +554,7 @@ class BlockudokuGame {
         this.handleCompletedRows(completedRows);
         this.handleCompletedColumns(completedColumns);
         this.handleCompletedBoxes(completedBoxes);
-    
-        // Redraw the grid after handling completes
-        this.redrawCanvas();
+        console.log("3. S-au sters celulele")
     }
 
     //We call this function to show the points you get when you clear someting (e.g., column, row, box)
