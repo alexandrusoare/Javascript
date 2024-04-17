@@ -16,14 +16,15 @@
     let screenWidth = window.innerWidth;
     let screenHeight = window.innerHeight;
 
+
     let egypt_bg = document.getElementById("egypt-background");
     let home = document.getElementById("acasa");
     let about = document.getElementById("despre_noi");
     let servicii = document.getElementById('servicii');
     let blockudoku = document.getElementById('blockudoku');
     let contact = document.getElementById('contact');
-    egypt_bg.style.width = `${screenWidth}px`;
-    egypt_bg.style.height = `${screenHeight}px`;
+    // egypt_bg.style.width = `${screenWidth}px`;
+    // egypt_bg.style.height = `${screenHeight}px`;
     home.style.width = `${screenWidth}px`;
     home.style.height = `${screenHeight}px`;
     about.style.width = `${screenWidth}px`;
@@ -216,14 +217,115 @@ function getRandomPosition(circle) {
     return { x, y };
   }
 
-  function moveCircle(circle) {
+  const circles = [circle1, circle2, circle3, circle4];
+
+circles.forEach(circle => {
     const newPosition = getRandomPosition(circle);
     circle.style.left = newPosition.x + 'px';
     circle.style.top = newPosition.y + 'px';
-  }
+    moveCircleContinuously(circle);
+});
 
-  [circle1, circle2, circle3, circle4].map(x=> moveCircle(x));
+function moveCircleContinuously(circle) {
+    let direction = getRandomDirection();
+    const speed = 1.5 ; // Adjust as needed
 
+    function move() {
+        const result = calculateNewPosition(circle, direction, speed);
+        let newPosition = result.position;
+        direction = result.direction;
+        circle.style.left = newPosition.x + 'px';
+        circle.style.top = newPosition.y + 'px';
+        requestAnimationFrame(move);
+    }
 
-//pagina de servicii 
+    move();
+}
 
+function getRandomDirection() {
+    const directions = ['upleft', 'upright', 'downleft', 'downright', 'up', 'down', 'left', 'right'];
+    return directions[Math.floor(Math.random() * directions.length)];
+}
+
+function calculateNewPosition(circle, direction, speed) {
+    const currentPosition = {
+        x: parseFloat(circle.style.left),
+        y: parseFloat(circle.style.top)
+    };
+
+    switch (direction) {
+        case 'up':
+            currentPosition.y -= speed;
+            break;
+        case 'down':
+            currentPosition.y += speed;
+            break;
+        case 'left':
+            currentPosition.x -= speed;
+            break;
+        case 'right':
+            currentPosition.x += speed;
+            break;
+        case 'upleft':
+            currentPosition.x -= speed;
+            currentPosition.y -= speed;
+            break;
+        case 'upright':
+            currentPosition.x += speed;
+            currentPosition.y -= speed;
+            break;
+        case 'downleft':
+            currentPosition.x -= speed;
+            currentPosition.y += speed;
+            break;
+        case 'downright':
+            currentPosition.x += speed;
+            currentPosition.y += speed;
+            break;
+    }
+
+    const parent = circle.parentElement;
+    const parentRect = parent.getBoundingClientRect();
+    const circleRect = circle.getBoundingClientRect();
+
+    if (currentPosition.x < parentRect.left) {
+        currentPosition.x = parentRect.left;
+        direction = reflectDirection(direction, 'left');
+    }
+    if (currentPosition.x + circleRect.width > parentRect.right) {
+        currentPosition.x = parentRect.right - circleRect.width;
+        direction = reflectDirection(direction, 'right');
+    }
+    if (currentPosition.y < parentRect.top) {
+        currentPosition.y = parentRect.top;
+        direction = reflectDirection(direction, 'up');
+    }
+    if (currentPosition.y + circleRect.height > parentRect.bottom) {
+        currentPosition.y = parentRect.bottom - circleRect.height;
+        direction = reflectDirection(direction, 'down');
+    }
+
+    return { position: currentPosition, direction: direction };
+}
+
+function reflectDirection(direction, boundary) {
+    switch (boundary) {
+        case 'up':
+        case 'down':
+            if (direction.includes('up')) {
+                return direction.replace('up', 'down');
+            } else if (direction.includes('down')) {
+                return direction.replace('down', 'up');
+            }
+            break;
+        case 'left':
+        case 'right':
+            if (direction.includes('left')) {
+                return direction.replace('left', 'right');
+            } else if (direction.includes('right')) {
+                return direction.replace('right', 'left');
+            }
+            break;
+    }
+    return direction;
+}
