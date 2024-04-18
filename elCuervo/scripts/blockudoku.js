@@ -712,7 +712,7 @@ class BlockudokuGame {
     restartGame() {
         let gameContainer = document.getElementById('game-container');
         let gameOverContainer = document.getElementById('gameover-container');
-        gameContainer.style.display = 'flex';
+        gameContainer.style.display = 'block';
         gameOverContainer.style.display = 'none';
         // Reset game state
         this.grid = Array.from({ length: this.gridSize }, () => Array(this.gridSize).fill(null));

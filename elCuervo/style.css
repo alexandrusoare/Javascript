@@ -195,7 +195,7 @@ section {
   }
 
   .content {
-    display: block; /* Initially hide the content */
+    display: none; /* Initially hide the content */
     position: absolute;
     top: 0;
     left: 0;
@@ -956,6 +956,63 @@ section {
 #game-canvas {
   display: flex;
   margin: 0 auto;
+}
+
+#gameover-container {
+  display: none;
+  width: 426px;
+  height: 600px;
+  margin: 30px auto ;
+  border-radius: 10px;
+  background: linear-gradient(to right, #3564C3, #1b75d6);
+  flex-direction: column;
+  align-items: center;
+}
+
+#gameover-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #F2F5F8;
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 30px;
+  letter-spacing: 1px;
+}
+
+#miniature-grid {
+  margin-top: 30px;
+  border-radius: 10px;
+  border: 10px solid #F2F5F8;
+  background: #F2F5F8;
+
+}
+
+#new-game {
+  width: 250px;
+  border-radius: 25px;
+  background: #F2F5F8;
+  border: none;
+  margin-top: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #3564C3;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+#gameinfo-container {
+  width: 426px;
+  margin: 0 auto;
+  text-align: center;
+  color: #344861;
+}
+
+#gameinfo-container > p {
+  color: #6e7c8c;
+  font-weight: 300;
 }
 
 @media screen and (max-width: 768px){
