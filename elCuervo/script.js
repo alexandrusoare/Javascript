@@ -13,33 +13,35 @@
 
 
 //prima pagina
+
+     // Get all the menu items
+     const menuItems = document.querySelectorAll('nav ul li a');
+
+     // Add event listener to each menu item
+     menuItems.forEach(item => {
+       item.addEventListener('click', scrollToSection);
+     });
+ 
+     // Function to scroll to the corresponding section
+     function scrollToSection(event) {
+       event.preventDefault();
+       // Prevent default anchor behavior
+ 
+       // Get the target section id from the href attribute
+       const targetId = event.target.getAttribute('href').substring(1);
+ 
+       // Get the target section element
+       const targetSection = document.getElementById(targetId);
+ 
+       // Scroll to the target section
+       targetSection.scrollIntoView({ behavior: 'smooth' });
+     }
+
+
     let screenWidth = window.innerWidth;
     let screenHeight = window.innerHeight;
 
-
-    let egypt_bg = document.getElementById("egypt-background");
-    let home = document.getElementById("acasa");
-    let about = document.getElementById("despre_noi");
-    let servicii = document.getElementById('servicii');
-    let blockudoku = document.getElementById('blockudoku');
-    let contact = document.getElementById('contact');
-    // egypt_bg.style.width = `${screenWidth}px`;
-    // egypt_bg.style.height = `${screenHeight}px`;
-    home.style.width = `${screenWidth}px`;
-    home.style.height = `${screenHeight}px`;
-    about.style.width = `${screenWidth}px`;
-    about.style.height = `${screenHeight}px`;
-    servicii.style.width = `${screenWidth}px`;
-    servicii.style.height = `${screenHeight}px`;
-    blockudoku.style.width = `${screenWidth}px`;
-    blockudoku.style.height = `${screenHeight}px`;
-    contact.style.width = `${screenWidth}px`;
-    contact.style.height = `${screenHeight}px`;
-
-
-
-
-let svgPath = screenWidth > 500 ? './assets/svgs/egypt_bg_desktop.svg' :  './assets/svgs/egypt_bg_mobile.svg';
+    let svgPath = screenWidth > 500 ? './assets/svgs/egypt_bg_desktop.svg' :  './assets/svgs/egypt_bg_mobile.svg';
 
 document.getElementById('burger-menu-icon').addEventListener('click', function() {
     // Toggle the class to switch between closed and opened menu states
@@ -243,7 +245,7 @@ function moveCircleContinuously(circle) {
 }
 
 function getRandomDirection() {
-    const directions = ['upleft', 'upright', 'downleft', 'downright', 'up', 'down', 'left', 'right'];
+    const directions = ['upleft', 'upright', 'downleft', 'downright'];
     return directions[Math.floor(Math.random() * directions.length)];
 }
 

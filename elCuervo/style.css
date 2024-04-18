@@ -8,8 +8,13 @@
     src: url(assets/fonts/SourceSansPro-Regular.otf)
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 html {
   scroll-snap-type: y mandatory;
+  scrollbar-width: none;
 }
 
 body {
@@ -150,7 +155,7 @@ section {
     }
   }
 
-  @media (max-width: 429px) {
+  @media (max-width: 768px) {
     .raven-wrapper{
       width: 70px;
       height: 70px;
@@ -210,8 +215,8 @@ section {
   #egypt-background {
     overflow: hidden;
     position: absolute;
-    width: 100dvw;
-    height: 100dvh;
+    width: 100vw;
+    height: 100vh;
   }
 
   #acasa {
@@ -219,6 +224,8 @@ section {
     margin: 0;
     position: relative;
     padding: 0;
+    width: 100svw;
+    height: 100svh;
   }
 
   .header {
@@ -268,9 +275,10 @@ section {
     gap: 15px;
     justify-content: space-evenly;
     padding: 0 10px 0 10px;
+    align-items: center;
   }
 
-  #menu > li {
+  #menu > li > a {
     align-self: center;
     font-size: 32px;
     line-height: 32px;
@@ -279,6 +287,7 @@ section {
     -webkit-text-stroke-width: 0.7px;
     -webkit-text-stroke-color: #FDFAEF;
     cursor: pointer;
+    text-decoration: none;
   }
 
   #menu > li:hover{
@@ -372,7 +381,7 @@ section {
     }
   }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 768px) {
     
     .header {
       grid-template-columns: 40% 30% 30%;
@@ -439,7 +448,7 @@ section {
       top: 85px;
       background: #01334A;
       width: 100vw;
-      height: calc(100vh - 85px);
+      height: calc(100svh - 85px);
       z-index: 10000;
       margin-left: 100%;
       transition: margin-left 0.3s ease-in-out; 
@@ -456,17 +465,17 @@ section {
     }
     
     #title-container {
-      margin: 60px auto;
+      margin: 30px auto;
     }
 
     #title-container > h1 {
-      font-size: 110px;
+      font-size: 90px;
       text-align: center;
     }
 
     #subtitlu {
       width: 100%;
-      font-size: 40px;
+      font-size: 32px;
       text-align: center;
     }
 
@@ -495,6 +504,8 @@ section {
     margin: 0;
     position: relative;
     padding: 0;
+    width: 100vw;
+    height: 100vh;
   }
 
   #ba-background {
@@ -595,7 +606,7 @@ section {
   width: 715px;  
 }
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 768px){
 
   #ba-background {
     background: linear-gradient(to bottom, black 0%, black 50%, white 50%, white 100%);
@@ -624,7 +635,7 @@ section {
 
   #about-card {
     width: 300px;
-    height: 650px;
+    height: 550px;
   }
 
   #eye-container {
@@ -637,9 +648,10 @@ section {
   }
 
   #about-description {
-    font-size: 28px;
+    font-size: 24px;
     width: 250px;
     text-align: center;
+    letter-spacing: 1px;
   }
 
 }
@@ -651,6 +663,8 @@ section {
     margin: 0;
     position: relative;
     padding: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
 #servicii-title {
@@ -782,7 +796,7 @@ section {
   display: none;
 }
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 768px){
   #servicii-title {
     font-size: 50px;
 
@@ -846,6 +860,8 @@ section {
   position: relative;
   padding: 0;
   display: flex;
+  width: 100vw;
+  height: 100vh;
 }
 
 #blockudoku-title {
@@ -942,7 +958,7 @@ section {
   margin: 0 auto;
 }
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 768px){
   #blockudoku-title {
     font-size: 50px;
   }
@@ -981,6 +997,8 @@ left: 50%;
   position: relative;
   padding: 0;
   display: flex;
+  width: 100vw;
+  height: 100vh;
 }
 
 #contact-title {
@@ -1118,7 +1136,7 @@ footer > span {
 }
 
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 768px){
 
   #contact-title{
     font-size: 50px;
