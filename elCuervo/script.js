@@ -336,4 +336,68 @@ function reflectDirection(direction, boundary) {
     }
     return direction;
 }
-},1900)
+},2000)
+
+const cardContainer = document.getElementById('servicii-card-container');
+const cards = document.querySelectorAll('.servicii-card');
+let currentCardIndex = 0;
+const section = document.getElementById('servicii');
+const nextSection = document.getElementById('blockudoku');
+const previousSection = document.getElementById('despre_noi');
+
+const hammer = new Hammer(section);
+hammer.get('swipe').set({ direction: Hammer.DIRECTION_UP | Hammer.DIRECTION_DOWN });
+
+hammer.on('swipe', function(ev) {
+  if (ev.direction === Hammer.DIRECTION_UP) {
+    handleSwipe('up');
+  } else if (ev.direction === Hammer.DIRECTION_DOWN) {
+    handleSwipe('down');
+  }
+});
+
+const cardNumberElement = document.getElementById('card-number');
+
+function updateCardNumber(index, total) {
+  cardNumberElement.textContent = `${index + 1} / ${total}`;
+}
+
+function handleSwipe(direction) {
+  if (direction === 'up' && currentCardIndex < cards.length) {
+    // Swipe up logic
+    updateCardNumber(currentCardIndex, cards.length);
+    animateCard(currentCardIndex, 'up');
+    currentCardIndex++;
+  } else if (direction === 'down' && currentCardIndex > 0) {
+    // Swipe down logic
+    updateCardNumber(currentCardIndex-2, cards.length);
+    animateCard(currentCardIndex-1, 'down');
+    currentCardIndex--;
+  } else if (direction === 'down' && currentCardIndex === 0) {
+    // Scroll to the previous section if on the first card
+    scrollToPreviousSection();
+  } else {
+    // Scroll to the next section if on the last card
+    scrollToNextSection();
+  }
+}
+
+function animateCard(index, direction) {
+  const card = cards[index];
+  if (direction == "up"){
+  card.classList.add('swipe-animation');}
+  else if (direction == "down"){
+    card.classList.remove('swipe-animation')
+    card.classList.add('swipe-down')
+    setTimeout(()=>card.classList.remove('swipe-down'),300);
+  }
+}
+
+function scrollToPreviousSection() {
+    previousSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+function scrollToNextSection() {
+  nextSection.scrollIntoView({ behavior: 'smooth' });
+}
+

@@ -754,7 +754,7 @@ section {
 
 .notebook-content {
   width: 80%;
-  height: 200px;
+  height: 180px;
   margin: 25px auto 0;
   position: relative;
   padding: 0;
@@ -796,40 +796,54 @@ section {
   display: none;
 }
 
+#swipe {
+  display: none;
+}
+
 @media screen and (max-width: 768px){
   #servicii-title {
     font-size: 50px;
-
   }
 
   #hieroglyph {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
+  }
+
+  .card-title{
+    font-size: 22px;
+  }
+
+  .card-image{
+    width: 80px;
+    height: 80px;
+  }
+
+  .card-description {
+    font-size: 22px;
   }
 
   #servicii-card-container{
     display: flex;
     justify-content: center;
-    margin-top: 100px;
+    margin-top: 20px;
   }
 
   .servicii-card {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;  }
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; 
+    bottom: -175%;
+  }
 
   .servicii-card.card1{
-    z-index: 4;
+    z-index: 2;
   }
 
   .servicii-card.card2{
     z-index: 3;
-    right: 4%;
-    top: -2%;
   }
 
   .servicii-card.card3{
-    z-index: 2;
-    right: 1%;
-    top: -4%;
+    z-index: 4;
   }
 
 
@@ -848,6 +862,69 @@ section {
   -webkit-text-stroke-width: 1.8px;
   -webkit-text-stroke-color: #fff;
   }
+
+  #swipe {
+    display: block;
+    position: absolute;
+    font-size: 30px;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    -webkit-text-stroke-width: 1.8px;
+    -webkit-text-stroke-color: #fff;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: jump 2s infinite;
+  }
+}
+
+
+
+.swipe-animation {
+  animation: swipe-up .5s forwards;
+}
+
+.swipe-down {
+  animation: swipe-back .5s forwards;
+}
+
+@keyframes swipe-up {
+  0% {
+    bottom: -175%;
+    width: 350px;
+    height: 500px;
+  }
+  100% {
+    bottom: 0;
+    width: 250px;
+    height: 400px;
+  }
+}
+
+@keyframes swipe-back {
+  0% {
+    bottom: 0;
+    width: 250px;
+    height: 400px;
+  }
+
+  100% {
+    bottom: -200%;
+    width: 350px;
+    height: 500px;
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: translate(-50%, 0);
+}
+50% {
+    transform: translate(-50%, -40px);
+}
+100% {
+    transform: translate(-50%, 0);
+}
 }
 
 
