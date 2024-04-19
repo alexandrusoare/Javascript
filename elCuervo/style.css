@@ -754,7 +754,7 @@ section {
 
 .notebook-content {
   width: 80%;
-  height: 180px;
+  height: 200px;
   margin: 25px auto 0;
   position: relative;
   padding: 0;
@@ -808,6 +808,10 @@ section {
   #hieroglyph {
     width: 80px;
     height: 80px;
+  }
+
+  .notebook-content {
+    height: 180px;
   }
 
   .card-title{

@@ -1,3 +1,5 @@
+
+//logica pentru pagina de loading si afisaj continut
 window.addEventListener('load', function () {
     let raven = document.querySelector('.raven-container');
     raven.classList.add('loaded');
@@ -9,7 +11,7 @@ window.addEventListener('load', function () {
         content[0].classList.add('loaded');
         let loaded_wrapper = document.getElementsByClassName('loader-wrapper');
         loaded_wrapper[0].style.display = 'none';
-    }, 1800); // 2000 milliseconds = 2 seconds
+    }, 1800);
   });
 
 
