@@ -979,6 +979,8 @@ section {
   align-items: center;
 }
 
+
+
 #game-container{
   position: relative;
   background: #fff;
@@ -1039,6 +1041,29 @@ section {
   margin: 0 auto;
 }
 
+#tap {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: drag-and-drop 2.5s ease-in-out infinite;
+  transition: opacity .3s ease;
+}
+
+@keyframes drag-and-drop {
+  0%, 100%{
+    bottom: 5%;
+  }
+  50%{
+    bottom: 50%;
+  }
+}
+
+
 #gameover-container {
   display: none;
   width: 426px;
@@ -1095,6 +1120,8 @@ section {
   color: #6e7c8c;
   font-weight: 300;
 }
+
+
 
 @media screen and (max-width: 768px){
   #blockudoku-title {
@@ -1328,6 +1355,12 @@ footer > span {
   footer {
     height: 35px;
   }
+}
+
+.animate {
+  opacity: 0; /* Initially hidden */
+  transform: translateY(80px); /* Initial position below */
+  transition: opacity .5s ease, transform .8s ease; /* Smooth transition */
 }
 
 

@@ -1,4 +1,18 @@
-
+function animateElementsIn() {
+    const elements = document.querySelectorAll('.animate');
+  
+    elements.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+  
+      if (elementTop < windowHeight) {
+        if (element.classList.contains('animate')) {
+          element.style.opacity = 1; // Set opacity to 1 when element comes into view
+          element.style.transform = 'translateY(0)'; // Reset transform property
+        }
+      }
+    });
+  }
 //logica pentru pagina de loading si afisaj continut
 window.addEventListener('load', function () {
     let raven = document.querySelector('.raven-container');
@@ -11,10 +25,15 @@ window.addEventListener('load', function () {
         content[0].classList.add('loaded');
         let loaded_wrapper = document.getElementsByClassName('loader-wrapper');
         loaded_wrapper[0].style.display = 'none';
+        animateElementsIn();
     }, 1800);
   });
 
-
+  
+  
+  
+  // Check if elements are in view on scroll
+  window.addEventListener('scroll', animateElementsIn);
 
 
 //prima pagina
@@ -402,4 +421,53 @@ function scrollToPreviousSection() {
 function scrollToNextSection() {
   nextSection.scrollIntoView({ behavior: 'smooth' });
 }
+
+
+//blockudoku page
+const hand = document.getElementById("tap");
+const canvas = document.getElementById("game-canvas");
+
+
+function animateHand() {
+      const elementTop = hand.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      setTimeout(() =>{
+      if (elementTop < windowHeight) {       
+          hand.style.opacity = 1; // Set opacity to 1 when element comes into view
+          hand.style.display = 'inline'; // Reset transform property
+        }
+      },2000)
+      
+}
+
+window.addEventListener('scroll', animateHand);
+ 
+canvas.addEventListener('touchstart', function() {
+    console.log('Touch event detected');
+  });
+
+  canvas.addEventListener('click', function() {
+    console.log('Touch event detected');
+  });
+
+function hideHand() {
+    hand.style.opacity = 0;
+    hand.style.display = 'none';
+  }
+  
+  // Function to handle touch or click events on the canvas
+  function handleCanvasInteraction() {
+    // Hide the hand
+    hideHand();
+  
+    // Remove event listeners to prevent further interaction with the hand
+    canvas.removeEventListener('touchstart', handleCanvasInteraction);
+    canvas.removeEventListener('click', handleCanvasInteraction);
+  }
+  
+  // Listen for touch or click events on the canvas
+  canvas.addEventListener('touchstart', handleCanvasInteraction);
+  canvas.addEventListener('click', handleCanvasInteraction);
+  
+  
 
