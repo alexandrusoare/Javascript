@@ -1038,7 +1038,7 @@ section {
 
 #game-canvas {
   display: flex;
-  margin: 0 auto;
+  margin: 0 auto;  
 }
 
 #tap {
@@ -1052,6 +1052,7 @@ section {
   transform: translateX(-50%);
   animation: drag-and-drop 2.5s ease-in-out infinite;
   transition: opacity .3s ease;
+  pointer-events: none;
 }
 
 @keyframes drag-and-drop {
@@ -1137,17 +1138,22 @@ section {
     width: 300px;
   }
 
-  #game-canvas {
-    width: 300px;
-  }
-
   #blockudoku-title {
     font-size: 50px;
     transform: translateX(-50%);
-transform-origin: center;
-position: absolute;
-top: 5%;
-left: 50%;
+    transform-origin: center;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+  }
+
+  #gameover-container {
+    width: 340px;
+    height: 500px;
+  }
+
+  #new-game {
+    margin: auto 0 auto;
   }
 
 }

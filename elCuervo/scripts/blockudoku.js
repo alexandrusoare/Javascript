@@ -4,9 +4,10 @@ class BlockudokuGame {
     constructor() {
         this.gameCanvas = document.getElementById("game-canvas");
         this.ctx = this.gameCanvas.getContext("2d");
+        this.setCanvasDimension();
         this.gridSize = 9;
-        this.cellSize = this.gameCanvas.width / this.gridSize;
         this.canvasWidth = this.gameCanvas.width;
+        this.cellSize = this.canvasWidth / this.gridSize;
         this.borderWidth = 1;
         this.shapeScale = 0.5;
         this.randomShapes = this.generateNewRandomShapes();
@@ -32,6 +33,11 @@ class BlockudokuGame {
         this.gameCanvas.addEventListener("mousedown", this.handleMouseDown.bind(this));
         this.gameCanvas.addEventListener("mousemove", this.handleMouseMove.bind(this));
         this.gameCanvas.addEventListener("mouseup", this.handleMouseUp.bind(this));
+        
+        this.gameCanvas.addEventListener("touchstart", this.handleTouchStart.bind(this));
+        this.gameCanvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
+        this.gameCanvas.addEventListener("touchend", this.handleTouchEnd.bind(this));
+        
     }
 
     //This function makes sure the best score resets after 1 day
@@ -47,6 +53,17 @@ class BlockudokuGame {
                 this.updateBestScoreDisplay();
             }
         }, 60000); // Check every minute
+    }
+
+    setCanvasDimension() {
+        const screenWidth = window.innerWidth;
+        if (screenWidth <= 768) {
+            this.gameCanvas.width = 300;
+            this.gameCanvas.height = 387;
+        }else {
+            this.gameCanvas.width = 426;
+            this.gameCanvas.height = 550; 
+        }
     }
 
     updateBestScore(score) {
@@ -277,7 +294,7 @@ class BlockudokuGame {
         const startY = shape.y;
         const endX = startX + this.calculateShapeWidth(shape);
         const endY = startY + this.calculateShapeHeight(shape);
-    
+        
         return (
             mouseX >= startX &&
             mouseX <= endX &&
@@ -291,7 +308,6 @@ class BlockudokuGame {
     handleMouseDown = (event) => {
         const mouseX = event.clientX - this.gameCanvas.getBoundingClientRect().left;
         const mouseY = event.clientY - this.gameCanvas.getBoundingClientRect().top;
-
         // Check if the cursor is over any of the shapes
         this.selectedShape = this.randomShapes.find(shape => this.isCursorOverShape(shape, mouseX, mouseY));
 
@@ -309,6 +325,7 @@ class BlockudokuGame {
         const mouseX = event.clientX - this.gameCanvas.getBoundingClientRect().left;
         const mouseY = event.clientY - this.gameCanvas.getBoundingClientRect().top;
 
+        
         const isCursorOverAnyShape = this.randomShapes.some(shape => this.isCursorOverShape(shape, mouseX, mouseY));
          
         // Stylise the cursor if it's over a shape
@@ -357,6 +374,79 @@ class BlockudokuGame {
             }
         }
     };
+
+
+    handleTouchStart = (event) => {
+        const touch = event.touches[0];
+        const touchX = touch.clientX - this.gameCanvas.getBoundingClientRect().left;
+        const touchY = touch.clientY - this.gameCanvas.getBoundingClientRect().top;
+        
+        
+
+        // Check if the touch is over any of the shapes
+        this.selectedShape = this.randomShapes.find(shape => this.isCursorOverShape(shape, touchX, touchY));
+        if (this.selectedShape) {
+            this.isDragging = true;
+            
+            // Calculate the offset between the touch and the top-left corner of the shape
+            this.dragOffsetX = touchX - this.selectedShape.x;
+            this.dragOffsetY = touchY - this.selectedShape.y;
+        }
+    };
+    
+    handleTouchMove = (event) => {
+        event.preventDefault(); // Prevent scrolling on touch devices
+        const touch = event.touches[0];
+        const touchX = touch.clientX - this.gameCanvas.getBoundingClientRect().left;
+        const touchY = touch.clientY - this.gameCanvas.getBoundingClientRect().top;
+    
+        const isCursorOverAnyShape = this.randomShapes.some(shape => this.isCursorOverShape(shape, touchX, touchY));
+         
+        // Stylise the cursor if it's over a shape
+        this.gameCanvas.style.cursor = isCursorOverAnyShape ? "pointer" : "default";
+    
+        if (this.isDragging && this.selectedShape) {
+            // Update the position of the selected shape based on the touch movement
+            this.selectedShape.x = touchX - this.dragOffsetX;
+            this.selectedShape.y = touchY - this.dragOffsetY;
+    
+            this.isPlacementPossible = this.canPlaceShapeAtPosition(this.selectedShape, this.selectedShape.x, this.selectedShape.y);
+    
+            // Clear the canvas and redraw the grid with the new shape position
+            this.redrawCanvas();
+        }
+    };
+    
+    handleTouchEnd = () => {
+        if (this.isDragging && this.selectedShape) {
+            // Attempt to place the selected shape on the grid
+            const placementSuccessful = this.placeShapeOnGrid(this.selectedShape);
+    
+            // If placement is successful, update the canvas
+            if (placementSuccessful) {
+                this.checkForCompletes();
+                this.randomShapes[this.randomShapes.indexOf(this.selectedShape)] = null;
+                this.randomShapes.map(x=> this.checkGridAvailability(x));
+                this.isDragging = false;
+                this.selectedShape = null;
+                if (this.randomShapes.every(shape => shape === null)) {
+                    // Generate three new random shapes
+                    this.randomShapes = this.generateNewRandomShapes();
+                }
+                if (this.randomShapes.filter(x => x && x.clickable === true).length === 0){
+                    this.gameOver = true;
+                }
+                this.redrawCanvas();
+            } else { // If placement failed, update the canvas and put the shape at the initial place
+                this.selectedShape.x = this.selectedShape.initialX;
+                this.selectedShape.y = this.selectedShape.initialY;
+                this.isDragging = false;
+                this.selectedShape = null;
+                this.redrawCanvas();
+            }
+        }
+    };
+    
 
     
 
@@ -518,7 +608,7 @@ class BlockudokuGame {
 
         // Start the animation
         animate();
-        console.log("1. Se animeaza")
+        
     }
 
     //We call this function to manage all 3 possibilities of breaking (columns, rows, boxes)
@@ -544,7 +634,7 @@ class BlockudokuGame {
             })];
             // Animate cleared cells
             this.animateClearedCells(completedCells);
-            console.log("2. S-a terminat animatia")
+            
         }
 
         //we call this function only when we clear a line or a box, this animates the points we get 
@@ -556,7 +646,7 @@ class BlockudokuGame {
         this.handleCompletedRows(completedRows);
         this.handleCompletedColumns(completedColumns);
         this.handleCompletedBoxes(completedBoxes);
-        console.log("3. S-au sters celulele")
+        
     }
 
     //We call this function to show the points you get when you clear someting (e.g., column, row, box)

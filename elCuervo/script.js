@@ -440,15 +440,9 @@ function animateHand() {
       
 }
 
-window.addEventListener('scroll', animateHand);
+animateHand()
  
-canvas.addEventListener('touchstart', function() {
-    console.log('Touch event detected');
-  });
 
-  canvas.addEventListener('click', function() {
-    console.log('Touch event detected');
-  });
 
 function hideHand() {
     hand.style.opacity = 0;
@@ -462,12 +456,12 @@ function hideHand() {
   
     // Remove event listeners to prevent further interaction with the hand
     canvas.removeEventListener('touchstart', handleCanvasInteraction);
-    canvas.removeEventListener('click', handleCanvasInteraction);
+    canvas.removeEventListener('mousedown', handleCanvasInteraction);
   }
   
   // Listen for touch or click events on the canvas
   canvas.addEventListener('touchstart', handleCanvasInteraction);
-  canvas.addEventListener('click', handleCanvasInteraction);
+  canvas.addEventListener('mousedown', handleCanvasInteraction);
   
   
 
